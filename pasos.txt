@@ -1,0 +1,67 @@
+npm create vite@latest
+|
+o  Project name:
+|  frontend
+|
+o  Select a framework:
+|  Vue
+|
+o  Select a variant:
+|  Official Vue Starter ↗
+T  Vue.js - The Progressive JavaScript Framework
+|
+o  Select features to include in your project: (↑/↓ to navigate, space to
+select, a to toggle all, enter to confirm)
+|  Router (SPA development), Pinia (state management)
+
+Scaffolding project in C:\Users\thinkpad\Desktop\Vue\vue jp\appsalon_mevn\fronte
+nd...
+|
+—  Done. Now run:
+
+   npm install
+   npm run dev
+
+
+agregar Tailwind
+    npm install -D tailwindcss@3 postcss autoprefixer
+
+
+instalar axios
+   npm i axios
+
+agregar calendario 
+   npm i vue-tailwind-datepicker
+
+   agregar en tailwind.config.js
+      const colors = require('tailwindcss/colors')
+
+      './node_modules/vue-tailwind-datepicker/**/*.js'
+
+      colors: {
+        "vtd-primary" : colors.blue
+      }
+
+npm i @formkit/vue @formkit/themes
+   en main.js
+      import { plugin, defaultConfig } from '@formkit/vue'
+
+      import config from '../formkit.config'
+
+      import config from '../formkit.config'
+
+   en raiz crear archivo formkit.config.js
+
+   en tailwind.config.js
+    "./formkit.config.js"
+
+Toast
+   npm i vue-toast-notification
+
+   en main.js
+      import { useToast } from 'vue-toast-notification'
+
+      // import "vue-toast-notification/dist/theme-default.css"
+      // import "vue-toast-notification/dist/theme-bootstrap.css"
+      import "vue-toast-notification/dist/theme-sugar.css"
+
