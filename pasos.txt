@@ -67,3 +67,5 @@ Toast
 
 Date-fns
   npm i date-fns
+
+agregar en raiz vercel.json
