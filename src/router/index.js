@@ -12,6 +12,19 @@ const router = createRouter({
       component: HomeView,
     },
     {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('../views/admin/AdminLayout.vue'),
+      meta: {requiresAdmin: true},
+      children: [
+        {
+          path: '',
+          name: 'admin-appointmens',
+          component: () => import('../views/admin/AppointmensView.vue') ,
+        }
+      ]
+    },
+    {
       path: '/reservaciones',
       name: 'appointments',
       component: AppointmentsLayout,
@@ -37,6 +50,22 @@ const router = createRouter({
               component: () => import('../views/appointments/AppointmentView.vue')
             }
           ]
+        },
+        {
+          path: ':id/editar',
+          component: () => import('../views/appointments/EditAppointmentLayout.vue'),
+          children: [
+            {
+              path: '',
+              name: 'edit-appointment',
+              component: () => import('../views/appointments/ServicesView.vue')
+            },
+            {
+              path: 'detalles',
+              name: 'edit-appointment-details',
+              component: () => import('../views/appointments/AppointmentView.vue')
+            }
+          ]
         }
       ]
     },
@@ -59,7 +88,17 @@ const router = createRouter({
           path: 'login',
           name: 'login',
           component: () => import('../views/auth/LoginView.vue'),
-        }
+        },
+        {
+          path: 'olvide-password',
+          name: 'forgot-password',
+          component: () => import('../views/auth/ForgotPasswordView.vue'),
+        },
+        {
+          path: 'olvide-password/:token',
+          name: 'new-password',
+          component: () => import('../views/auth/NewPasswordView.vue'),
+        },
       ]
     }
   ],
@@ -74,8 +113,15 @@ router.beforeEach( async(toString, from, next) => {
     try {
       // const { data } = await AuthAPI.auth()
       // console.log(data);
-      await AuthAPI.auth()
-      next()
+      const {data} = await AuthAPI.auth()
+      console.log(data);
+      if(data.admin){
+        // es admin
+        next({name: 'admin'})
+      }else{
+        // no es admin
+        next()
+      }
     } catch (error) {
       // console.log(error.response.data.msg);
       next({name: 'login'})
@@ -83,7 +129,23 @@ router.beforeEach( async(toString, from, next) => {
   }else{
     next()
   }
-  
+})
+
+router.beforeEach( async(toString, from, next) => {
+  const requiresAdmin = toString.matched.some(url => url.meta.requiresAdmin)
+
+
+  // verificaccion de admin
+  if(requiresAdmin){
+    try {
+      await AuthAPI.admin()
+      next()
+    } catch (error) {
+      next({name: 'login'})
+    }
+  }else{
+    next()
+  }
 })
 
 export default router
